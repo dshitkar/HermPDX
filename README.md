@@ -1,4 +1,4 @@
-[Herm](https://github.com/dshitkar/HermPDX#HermPDX)
+# HermPDX
 
 Why Herm? Because (Herm)es and (Herm)od are both Gods of Speed in their respective mythologies and Herm aims for time-efficiency.
 
