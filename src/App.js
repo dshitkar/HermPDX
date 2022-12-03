@@ -19,3 +19,23 @@ const App = () => {
       }
     }
   }
+  // This function is used to draw the root.
+  const drawRoute = (geoJson, map) => {
+    if (map.getLayer('route')) {
+      map.removeLayer('route')
+      map.removeSource('route')
+    }
+    map.addLayer({
+      id: 'route',
+      type: 'line',
+      source: {
+        type: 'geojson',
+        data: geoJson
+      },
+      paint: {
+        'line-color': '#4a90e2',
+        'line-width': 6
+
+      }
+    })
+  }
