@@ -20,4 +20,43 @@ const App = () => {
     }
   }
 
+  // This function is used to draw the root.
+  const drawRoute = (geoJson, map) => {
+    if (map.getLayer('route')) {
+      map.removeLayer('route')
+      map.removeSource('route')
+    }
+    map.addLayer({
+      id: 'route',
+      type: 'line',
+      source: {
+        type: 'geojson',
+        data: geoJson
+      },
+      paint: {
+        'line-color': '#4a90e2',
+        'line-width': 6
+
+      }
+    })
+  }
+  // Delivery markers
+  const addDeliveryMarker = (lngLat, map) => {
+    const element = document.createElement('div')
+    element.className = 'marker-delivery'
+    new tt.Marker({
+      element: element
+    })
+      .setLngLat(lngLat)
+      .addTo(map)
+  }
+
+  // Used to set the map
+  useEffect(() => {
+    const origin = {
+      lng: longitude,
+      lat: latitude,
+    }
+    const destinations = []
+
   
