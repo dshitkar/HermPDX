@@ -1,30 +1,28 @@
-import React, { useState } from "react";
+import {fireEvent, render, screen} from '@testing-library/react';
+import Login from './register-page';
 
-export const Register = (props) => {
-    const [email, setEmail] = useState('');
-    const [pass, setPass] = useState('');
-    const [name, setName] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(email);
-    }
+test('should render register page successfully', () => {
+  render(<Login />);
+  const heading = screen.getByText('Register to your free Herm account')
+  expect(heading).toBeInTheDocument();
 
-    return (
-        <div className="auth-form-container">
-            <img src="psu2.png"></img>
-            <h2>Register to your free Herm account</h2>
-        <form className="register-form" onSubmit={handleSubmit}>
-            <label htmlFor="name">Full Name</label>
-            <input value={name} name="name" id="name" placeholder="Full Name" />
-            <label htmlFor="email">Email</label>
-            <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="youremail@gmail.com" id="email" name="email" />
-            <label htmlFor="password">Password</label>
-            <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
-            <button type="submit">Get started</button>
-        </form>
-        <button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
-    </div>
-    )
-}
+  const IP4Email = screen.getByRole('input',{name:'Email'})
+  const IP4Pass = screen.getByRole('input',{name:'Password'})
+  const Nname = screen.getByRole('input',{name:'Name'})
 
+  expect(IP4Email).toBeInTheDocument()
+  expect(IP4Pass).toBeInTheDocument()
+  expect(Nname).toBeInTheDocument()
+
+  fireEvent.change(IP4Email, {target: {value: 'abc@abc.com'}})
+  fireEvent.change(IP4Pass, {target: {value: 'password123'}})
+  fireEvent.change(Nname, {target: {value: 'Anvitha'}})
+
+  expect(IP4Email).toHaveValue('abc@abc.com')
+  expect(IP4Pass).toHaveValue('password123')
+  expect(Nname).toHaveValue('Anvitha')
+
+  let submitButton =screen.getByText('Get started')
+  expect(submitButton).toBeInTheDocument()
+});
