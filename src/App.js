@@ -134,5 +134,64 @@ const App = () => {
       })
     }
 
- 
+  // Routes are recalculated when the markers are added
+    const recalculateRoutes = () => {
+      sortDestinations(destinations).then((sorted) => {
+        sorted.unshift(origin)
+
+        ttapi.services
+          .calculateRoute({
+            key: process.env.REACT_APP_TOM_TOM_API_KEY,
+            locations: sorted,
+          })
+          .then((routeData) => {
+            const geoJson = routeData.toGeoJson()
+            drawRoute(geoJson, map)
+          })
+      })
+    }
+
+    // Adding a new destination marker
+    map.on('click', (e) => {
+      destinations.push(e.lngLat)
+      addDeliveryMarker(e.lngLat, map)
+      recalculateRoutes()
+    })
+
+    return () => map.remove()
+  }, [longitude, latitude])
+
+  return (
+    <>
+      {map && (
+        <div className="app">
+          <div ref={mapElement} className="map" />
+          <div className="search-bar">
+            <h1>Where are you?</h1>
+            <input
+              type="text"
+              id="longitude"
+              className="longitude"
+              placeholder="Put in Longitude"
+              onChange={(e) => {
+                setLongitude(e.target.value)
+              }}
+            />
+            <input
+              type="text"
+              id="latitude"
+              className="latitude"
+              placeholder="Put in latitude"
+              onChange={(e) => {
+                setLatitude(e.target.value)
+              }}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+export default App
    
